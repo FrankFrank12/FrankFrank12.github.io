@@ -27,35 +27,38 @@
 </head>
 <body>
 
-  <div id="login-container">
-    <h2>Login with Phone</h2>
-    <input id="phoneBox" type="tel" placeholder="Phone number (e.g., +919876543210)" />
-    <button id="sendOtpBtn">Send OTP</button>
-    <div id="otp-group">
-      <hr style="margin: 20px 0;">
-      <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
-      <button id="verifyOtpBtn">Verify OTP & Login</button>
-    </div>
-  </div>
-  <div id="recaptcha-container"></div>
+  <div id="app-wrapper" style="display: none;">
 
-  <div id="select-chat-container">
-    <h2>Start a New Chat</h2>
-    <input id="recipientPhoneBox" type="tel" placeholder="Enter recipient's phone number" />
-    <button id="startChatBtn">Chat</button>
-    <button id="logoutBtnSelect">Logout</button>
-  </div>
-  
-  <div id="chat-container">
-    <h2 id="chat-header">Chat</h2>
-    <div id="messages"></div>
-    <div id="input-area">
-      <input id="msgBox" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
+    <div id="login-container">
+      <h2>Login with Phone</h2>
+      <input id="phoneBox" type="tel" placeholder="Phone number (e.g., +919876543210)" />
+      <button id="sendOtpBtn">Send OTP</button>
+      <div id="otp-group">
+        <hr style="margin: 20px 0;">
+        <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
+        <button id="verifyOtpBtn">Verify OTP & Login</button>
+      </div>
     </div>
-    <button id="backBtn">Back to Chat Selection</button>
-  </div>
+    <div id="recaptcha-container"></div>
 
-  <script type="module" src="app.js"></script>
+    <div id="select-chat-container">
+      <h2>Start a New Chat</h2>
+      <input id="recipientPhoneBox" type="tel" placeholder="Enter recipient's phone number" />
+      <button id="startChatBtn">Chat</button>
+      <button id="logoutBtnSelect">Logout</button>
+    </div>
+    
+    <div id="chat-container">
+      <h2 id="chat-header">Chat</h2>
+      <div id="messages"></div>
+      <div id="input-area">
+        <input id="msgBox" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+      <button id="backBtn">Back to Chat Selection</button>
+    </div>
+
+  </div> <script type="module" src="app.js"></script>
 </body>
 </html>
+

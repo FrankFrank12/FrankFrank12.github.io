@@ -1,3 +1,8 @@
+// Import functions from the Firebase SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
 // Replace with your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB7H_GFklwLJnqUPZGXWH9AKkJWG3Mc9fU",
@@ -9,37 +14,57 @@ const firebaseConfig = {
   measurementId: "G-V80NC8TQGJ"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Anonymous login
-auth.signInAnonymously().catch(err => console.error(err));
+// Sign in the user anonymously
+signInAnonymously(auth).catch(err => {
+    console.error("Anonymous sign-in failed:", err);
+});
 
-// Elements
+// Get references to HTML elements
 const msgBox = document.getElementById('msgBox');
 const sendBtn = document.getElementById('sendBtn');
 const messagesDiv = document.getElementById('messages');
 
-// Send message
-sendBtn.onclick = () => {
-  if (msgBox.value.trim()) {
-    db.collection("messages").add({
-      text: msgBox.value,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    msgBox.value = "";
+// Reference to the "messages" collection in Firestore
+const messagesRef = collection(db, "messages");
+
+// --- Send a message ---
+const sendMessage = () => {
+  const messageText = msgBox.value.trim();
+  if (messageText) {
+    addDoc(messagesRef, {
+      text: messageText,
+      timestamp: serverTimestamp() // Use server's timestamp
+    }).catch(err => console.error("Error sending message:", err));
+    msgBox.value = ""; // Clear the input box
   }
 };
 
-// Show messages live
-db.collection("messages")
-  .orderBy("timestamp")
-  .onSnapshot(snapshot => {
-    messagesDiv.innerHTML = "";
-    snapshot.forEach(doc => {
-      const msg = doc.data();
-      messagesDiv.innerHTML += <div class="msg">${msg.text}</div>;
-    });
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+// Add click event to the send button
+sendBtn.onclick = sendMessage;
+
+// Allow pressing Enter to send a message
+msgBox.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+
+// --- Listen for and display new messages ---
+const q = query(messagesRef, orderBy("timestamp")); // Order messages by time
+
+onSnapshot(q, (snapshot) => {
+  messagesDiv.innerHTML = ""; // Clear existing messages
+  snapshot.forEach(doc => {
+    const msg = doc.data();
+    // ✅ CORRECTED SYNTAX using backticks (`)
+    messagesDiv.innerHTML += `<div class="msg msg-in">${msg.text}</div>`;
   });
+  // Auto-scroll to the latest message
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});

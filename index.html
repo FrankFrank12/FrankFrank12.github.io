@@ -6,22 +6,46 @@
   <style>
     body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f4f4f9; }
     h2 { text-align: center; color: #333; }
+    input { width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
+    button { width: 100%; border: none; background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #006bcf; }
+    
+    /* Login & Chat Containers */
+    #login-container, #chat-container { display: none; } /* Hide both by default */
+    #login-container { max-width: 320px; margin: 50px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    #otp-group { display: none; } /* Hide OTP field initially */
+
+    /* Chat styling */
     #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; background-color: #fff; margin-bottom: 10px; border-radius: 5px; }
-    .msg { margin: 8px 0; padding: 5px 10px; border-radius: 15px; max-width: 70%; word-wrap: break-word; }
-    .msg-out { background-color: #0084ff; color: white; margin-left: auto; } /* Just an example for later */
-    .msg-in { background-color: #e4e6eb; color: black; } /* Just an example for later */
     #input-area { display: flex; }
-    #msgBox { flex-grow: 1; border: 1px solid #ccc; padding: 10px; border-radius: 20px; }
-    #sendBtn { border: none; background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 20px; margin-left: 10px; cursor: pointer; }
-    #sendBtn:hover { background-color: #006bcf; }
+    #msgBox { flex-grow: 1; border-radius: 20px; }
+    #sendBtn { width: auto; margin-left: 10px; border-radius: 20px; }
+    #logoutBtn { background-color: #dc3545; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>💬 Simple Chat</h2>
-  <div id="messages"></div>
-  <div id="input-area">
-    <input id="msgBox" placeholder="Type a message..." />
-    <button id="sendBtn">Send</button>
+
+  <div id="login-container">
+    <h2>Login with Phone</h2>
+    <input id="phoneBox" type="tel" placeholder="Phone number with country code (e.g., +919876543210)" />
+    <button id="sendOtpBtn">Send OTP</button>
+    <div id="otp-group">
+      <hr style="margin: 20px 0;">
+      <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
+      <button id="verifyOtpBtn">Verify OTP & Login</button>
+    </div>
+  </div>
+
+  <div id="recaptcha-container"></div>
+  
+  <div id="chat-container">
+    <h2>💬 Simple Chat</h2>
+    <div id="messages"></div>
+    <div id="input-area">
+      <input id="msgBox" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+    <button id="logoutBtn">Logout</button>
   </div>
 
   <script type="module" src="app.js"></script>

@@ -1,27 +1,23 @@
 // --- SITE-WIDE PASSWORD PROTECTION ---
-
-// 1. Set your secret password here
-const SITE_PASSWORD = "1980"; // Change this to your desired password
-
-// 2. Prompt the user when they visit the site
-const enteredPassword = prompt("Please enter the password to access this site:");
-
-// 3. Check the password
-if (enteredPassword === SITE_PASSWORD) {
-  // If correct, show the entire app
-  document.getElementById('app-wrapper').style.display = 'block';
-} else {
-  // If incorrect, show an alert and keep the app hidden
-  alert("Incorrect password. Access denied.");
+const SITE_PASSWORD = "1980";
+if (sessionStorage.getItem('site_access_granted') !== 'true') {
+  const enteredPassword = prompt("Please enter the password to access this site:");
+  if (enteredPassword === SITE_PASSWORD) {
+    sessionStorage.setItem('site_access_granted', 'true');
+  } else {
+    alert("Incorrect password. Access denied.");
+    // Stop script execution if password is wrong
+    throw new Error("Access Denied");
+  }
 }
+document.getElementById('app-wrapper').style.display = 'flex';
 
-// Import functions from the Firebase SDKs
+
+// --- FIREBASE IMPORTS ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-
-// Replace with your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB7H_GFklwLJnqUPZGXWH9AKkJWG3Mc9fU",
   authDomain: "chat-app-2bad9.firebaseapp.com",
@@ -32,16 +28,14 @@ const firebaseConfig = {
   measurementId: "G-V80NC8TQGJ"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Get references to all UI containers and elements
+// --- UI ELEMENT REFERENCES ---
 const loginContainer = document.getElementById('login-container');
 const selectChatContainer = document.getElementById('select-chat-container');
 const chatContainer = document.getElementById('chat-container');
-// ... (other elements from previous step)
 const phoneBox = document.getElementById('phoneBox');
 const sendOtpBtn = document.getElementById('sendOtpBtn');
 const otpGroup = document.getElementById('otp-group');
@@ -50,76 +44,78 @@ const verifyOtpBtn = document.getElementById('verifyOtpBtn');
 const recipientPhoneBox = document.getElementById('recipientPhoneBox');
 const startChatBtn = document.getElementById('startChatBtn');
 const logoutBtnSelect = document.getElementById('logoutBtnSelect');
-const chatHeader = document.getElementById('chat-header');
+const chatTitle = document.getElementById('chat-title');
 const msgBox = document.getElementById('msgBox');
 const sendBtn = document.getElementById('sendBtn');
 const messagesDiv = document.getElementById('messages');
 const backBtn = document.getElementById('backBtn');
+const themeToggle = document.getElementById('theme-toggle');
+
+// --- DARK MODE LOGIC ---
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark');
+    themeToggle.textContent = '☀️';
+  } else {
+    document.body.classList.remove('dark');
+    themeToggle.textContent = '🌙';
+  }
+}
+
+themeToggle.addEventListener('click', () => {
+  const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+  localStorage.setItem('theme', newTheme);
+  applyTheme(newTheme);
+});
+
+// Apply saved theme on load
+const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+applyTheme(savedTheme);
 
 
-// --- Authentication Logic (Largely the same) ---
+// --- AUTHENTICATION LOGIC ---
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
 let confirmationResult;
-// In app.js
-
 sendOtpBtn.onclick = () => {
   let phoneNumber = phoneBox.value.trim();
-
-  // --- NEW LOGIC STARTS HERE ---
-  // If the number is 10 digits and doesn't start with +, assume it's an Indian number
   if (phoneNumber.length === 10 && /^\d{10}$/.test(phoneNumber)) {
     phoneNumber = "+91" + phoneNumber;
-    console.log("Formatted number:", phoneNumber); // For testing
   }
-  // --- NEW LOGIC ENDS HERE ---
-
-  // Standard validation check
   if (!phoneNumber || !/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
-    alert("Please enter a valid 10-digit or international phone number (e.g., +919876543210).");
+    alert("Please enter a valid phone number.");
     return;
   }
-  
-  const appVerifier = window.recaptchaVerifier;
-  signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-    .then((result) => {
+  signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+    .then(result => {
       confirmationResult = result;
       otpGroup.style.display = 'block';
-      alert("OTP sent successfully!");
-    }).catch((error) => {
-      console.error("Error sending OTP:", error);
-      alert("Error sending OTP. Check the console for details.");
-    });
+      alert("OTP sent!");
+    }).catch(error => console.error("OTP Error", error));
 };
-
 verifyOtpBtn.onclick = () => {
   confirmationResult.confirm(otpBox.value).catch(error => alert("Invalid OTP"));
 };
 logoutBtnSelect.onclick = () => signOut(auth);
 
 
-// --- Main App Logic: Manage UI based on Auth State ---
+// --- UI MANAGEMENT BASED ON AUTH STATE ---
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is logged in, show the chat selection screen
-    loginContainer.style.display = 'none';
-    chatContainer.style.display = 'none';
-    selectChatContainer.style.display = 'block';
-  } else {
-    // User is logged out, show the login screen
-    loginContainer.style.display = 'block';
-    chatContainer.style.display = 'none';
-    selectChatContainer.style.display = 'none';
-  }
+  loginContainer.style.display = user ? 'none' : 'flex';
+  selectChatContainer.style.display = user ? 'flex' : 'none';
+  chatContainer.style.display = 'none';
 });
 
 
-// --- Chat Selection and Initialization ---
+// --- CHAT SELECTION & INITIALIZATION ---
 startChatBtn.onclick = () => {
   const currentUser = auth.currentUser;
-  const recipientPhone = recipientPhoneBox.value;
+  let recipientPhone = recipientPhoneBox.value.trim();
+   if (recipientPhone.length === 10 && /^\d{10}$/.test(recipientPhone)) {
+    recipientPhone = "+91" + recipientPhone;
+  }
   
   if (!recipientPhone || !/^\+[1-9]\d{1,14}$/.test(recipientPhone)) {
-      alert("Please enter a valid recipient phone number in E.164 format (e.g., +919876543210).");
+      alert("Please enter a valid recipient phone number.");
       return;
   }
   if (recipientPhone === currentUser.phoneNumber) {
@@ -127,33 +123,28 @@ startChatBtn.onclick = () => {
       return;
   }
 
-  // ** Generate the unique chat ID **
   const phoneNumbers = [currentUser.phoneNumber, recipientPhone].sort();
   const chatId = phoneNumbers.join('_');
 
-  // Show the chat screen
   selectChatContainer.style.display = 'none';
-  chatContainer.style.display = 'block';
-  chatHeader.innerText = `Chat with ${recipientPhone}`;
+  chatContainer.style.display = 'flex';
+  chatTitle.innerText = recipientPhone;
 
-  // Initialize the chat for this specific chat ID
   initializeChat(currentUser, chatId);
 };
 
 backBtn.onclick = () => {
-    if (unsubscribeFromChat) unsubscribeFromChat(); // Stop listening to messages
+    if (unsubscribeFromChat) unsubscribeFromChat();
     chatContainer.style.display = 'none';
-    selectChatContainer.style.display = 'block';
+    selectChatContainer.style.display = 'flex';
 };
 
-// --- Chat Functionality ---
+// --- CHAT FUNCTIONALITY ---
 let unsubscribeFromChat;
 
 function initializeChat(user, chatId) {
-  // ** Reference to the specific, private messages subcollection **
   const messagesRef = collection(db, "chats", chatId, "messages");
-
-  // Send a message
+  
   const sendMessage = () => {
     const messageText = msgBox.value.trim();
     if (messageText) {
@@ -169,20 +160,26 @@ function initializeChat(user, chatId) {
   sendBtn.onclick = sendMessage;
   msgBox.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
 
-  // Listen for messages in this private room
   const q = query(messagesRef, orderBy("timestamp"));
   
   unsubscribeFromChat = onSnapshot(q, (snapshot) => {
     messagesDiv.innerHTML = "";
     snapshot.forEach(doc => {
       const msg = doc.data();
-      const align = msg.sender === user.phoneNumber ? 'right' : 'left';
-      messagesDiv.innerHTML += `<div style="text-align: ${align}; margin: 5px;">${msg.text}</div>`;
+      const msgDiv = document.createElement('div');
+      msgDiv.textContent = msg.text;
+      
+      // *** THIS IS THE NEW PART FOR MESSAGE BUBBLES ***
+      msgDiv.classList.add('msg');
+      if (msg.sender === user.phoneNumber) {
+          msgDiv.classList.add('msg-sent');
+      } else {
+          msgDiv.classList.add('msg-received');
+      }
+
+      messagesDiv.appendChild(msgDiv);
     });
+    // Auto-scroll to the latest message
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
-
-
-
-

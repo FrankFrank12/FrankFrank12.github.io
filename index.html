@@ -10,24 +10,26 @@
     button { width: 100%; border: none; background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
     button:hover { background-color: #006bcf; }
     
-    /* Login & Chat Containers */
-    #login-container, #chat-container { display: none; } /* Hide both by default */
-    #login-container { max-width: 320px; margin: 50px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    #otp-group { display: none; } /* Hide OTP field initially */
+    /* Containers */
+    #login-container, #select-chat-container, #chat-container { display: none; } /* Hide all by default */
+    #login-container, #select-chat-container { max-width: 320px; margin: 50px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    #otp-group { display: none; }
 
     /* Chat styling */
+    #chat-header { font-size: 1.2em; text-align: center; margin-bottom: 10px; color: #555; }
     #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; background-color: #fff; margin-bottom: 10px; border-radius: 5px; }
     #input-area { display: flex; }
     #msgBox { flex-grow: 1; border-radius: 20px; }
     #sendBtn { width: auto; margin-left: 10px; border-radius: 20px; }
-    #logoutBtn { background-color: #dc3545; margin-top: 20px; }
+    #backBtn { background-color: #6c757d; margin-top: 10px; }
+    #logoutBtn { background-color: #dc3545; margin-top: 10px; }
   </style>
 </head>
 <body>
 
   <div id="login-container">
     <h2>Login with Phone</h2>
-    <input id="phoneBox" type="tel" placeholder="Phone number with country code (e.g., +919876543210)" />
+    <input id="phoneBox" type="tel" placeholder="Phone number (e.g., +919876543210)" />
     <button id="sendOtpBtn">Send OTP</button>
     <div id="otp-group">
       <hr style="margin: 20px 0;">
@@ -35,17 +37,23 @@
       <button id="verifyOtpBtn">Verify OTP & Login</button>
     </div>
   </div>
-
   <div id="recaptcha-container"></div>
+
+  <div id="select-chat-container">
+    <h2>Start a New Chat</h2>
+    <input id="recipientPhoneBox" type="tel" placeholder="Enter recipient's phone number" />
+    <button id="startChatBtn">Chat</button>
+    <button id="logoutBtnSelect">Logout</button>
+  </div>
   
   <div id="chat-container">
-    <h2>💬 Simple Chat</h2>
+    <h2 id="chat-header">Chat</h2>
     <div id="messages"></div>
     <div id="input-area">
       <input id="msgBox" placeholder="Type a message..." />
       <button id="sendBtn">Send</button>
     </div>
-    <button id="logoutBtn">Logout</button>
+    <button id="backBtn">Back to Chat Selection</button>
   </div>
 
   <script type="module" src="app.js"></script>

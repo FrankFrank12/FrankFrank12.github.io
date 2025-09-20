@@ -1,3 +1,20 @@
+// --- SITE-WIDE PASSWORD PROTECTION ---
+
+// 1. Set your secret password here
+const SITE_PASSWORD = "your_secret_password"; // Change this to your desired password
+
+// 2. Prompt the user when they visit the site
+const enteredPassword = prompt("Please enter the password to access this site:");
+
+// 3. Check the password
+if (enteredPassword === SITE_PASSWORD) {
+  // If correct, show the entire app
+  document.getElementById('app-wrapper').style.display = 'block';
+} else {
+  // If incorrect, show an alert and keep the app hidden
+  alert("Incorrect password. Access denied.");
+}
+
 // Import functions from the Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
@@ -143,4 +160,5 @@ function initializeChat(user, chatId) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
+
 

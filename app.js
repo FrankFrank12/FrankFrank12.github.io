@@ -183,3 +183,4 @@ function initializeChat(user, chatId) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
+

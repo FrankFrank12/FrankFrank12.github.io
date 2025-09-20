@@ -1,64 +1,208 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Chat App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BakaZiki Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f4f4f9; }
-    h2 { text-align: center; color: #333; }
-    input { width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
-    button { width: 100%; border: none; background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-    button:hover { background-color: #006bcf; }
-    
-    /* Containers */
-    #login-container, #select-chat-container, #chat-container { display: none; } /* Hide all by default */
-    #login-container, #select-chat-container { max-width: 320px; margin: 50px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    #otp-group { display: none; }
+    /* --- COLOR & THEME DEFINITIONS --- */
+    :root {
+      --primary-color: #0084ff;
+      --secondary-color: #f0f2f5;
+      
+      --bg-light: #ffffff;
+      --bg-dark: #18191a;
+      
+      --text-light: #ffffff;
+      --text-dark: #050505;
+      --text-secondary: #65676b;
 
-    /* Chat styling */
-    #chat-header { font-size: 1.2em; text-align: center; margin-bottom: 10px; color: #555; }
-    #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; background-color: #fff; margin-bottom: 10px; border-radius: 5px; }
-    #input-area { display: flex; }
-    #msgBox { flex-grow: 1; border-radius: 20px; }
-    #sendBtn { width: auto; margin-left: 10px; border-radius: 20px; }
-    #backBtn { background-color: #6c757d; margin-top: 10px; }
-    #logoutBtn { background-color: #dc3545; margin-top: 10px; }
+      --border-light: #ced0d4;
+      --border-dark: #3a3b3c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      --bg-light: var(--bg-dark);
+      --text-dark: var(--text-light);
+      --secondary-color: #3a3b3c;
+      --border-light: var(--border-dark);
+      --text-secondary: #b0b3b8;
+    }
+    
+    /* --- GENERAL STYLING --- */
+    button {
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    button:hover { background-color: #006bcf; }
+
+    input {
+      border: 1px solid var(--border-light);
+      padding: 10px;
+      border-radius: 20px;
+      background-color: var(--secondary-color);
+      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+    }
+    input:focus { outline: none; border-color: var(--primary-color); }
+
+    /* --- LAYOUT CONTAINERS --- */
+    #app-wrapper, #login-container, #select-chat-container, #chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .centered-container {
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* --- LOGIN & SELECT CHAT SCREENS --- */
+    #login-container div, #select-chat-container div {
+        width: 100%;
+        max-width: 350px;
+    }
+    h2 { text-align: center; }
+    #otp-group { display: none; margin-top: 1rem; }
+
+    /* --- CHAT SCREEN STYLING --- */
+    #chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      border-bottom: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+    #chat-title { font-weight: 600; font-size: 1.1em; }
+    #theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    
+    #messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .msg {
+      max-width: 75%;
+      padding: 8px 12px;
+      border-radius: 18px;
+      margin-bottom: 8px;
+      word-wrap: break-word;
+      line-height: 1.4;
+    }
+    .msg-sent {
+      background-color: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-received {
+      background-color: var(--secondary-color);
+      color: var(--text-dark);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    #input-area {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid var(--border-light);
+      flex-shrink: 0;
+      align-items: center;
+    }
+    #msgBox {
+      flex-grow: 1;
+      border: none;
+      margin-right: 10px;
+    }
+    #sendBtn {
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
 
   <div id="app-wrapper" style="display: none;">
-
-    <div id="login-container">
-      <h2>Login with Phone</h2>
-      <input id="phoneBox" type="tel" placeholder="Phone number (e.g., +919876543210)" />
-      <button id="sendOtpBtn">Send OTP</button>
-      <div id="otp-group">
-        <hr style="margin: 20px 0;">
-        <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
-        <button id="verifyOtpBtn">Verify OTP & Login</button>
+    
+    <div id="login-container" class="centered-container">
+      <div>
+        <h2>Login</h2>
+        <input id="phoneBox" type="tel" placeholder="Phone number (e.g., 9876543210)" />
+        <button id="sendOtpBtn">Send OTP</button>
+        <div id="otp-group">
+          <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
+          <button id="verifyOtpBtn">Verify OTP & Login</button>
+        </div>
       </div>
     </div>
     <div id="recaptcha-container"></div>
 
-    <div id="select-chat-container">
-      <h2>Start a New Chat</h2>
-      <input id="recipientPhoneBox" type="tel" placeholder="Enter recipient's phone number" />
-      <button id="startChatBtn">Chat</button>
-      <button id="logoutBtnSelect">Logout</button>
+    <div id="select-chat-container" class="centered-container">
+      <div>
+        <h2>Start Chat</h2>
+        <input id="recipientPhoneBox" type="tel" placeholder="Enter recipient's phone number" />
+        <button id="startChatBtn">Chat</button>
+        <button id="logoutBtnSelect" style="background-color: #6c757d; margin-top: 10px;">Logout</button>
+      </div>
     </div>
     
     <div id="chat-container">
-      <h2 id="chat-header">Chat</h2>
+      <div id="chat-header">
+        <button id="backBtn" style="background:none; color: var(--primary-color); font-weight: 600; padding: 0;">&lt; Back</button>
+        <span id="chat-title">Chat</span>
+        <button id="theme-toggle">🌙</button>
+      </div>
       <div id="messages"></div>
       <div id="input-area">
         <input id="msgBox" placeholder="Type a message..." />
-        <button id="sendBtn">Send</button>
+        <button id="sendBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: white;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
       </div>
-      <button id="backBtn">Back to Chat Selection</button>
     </div>
 
-  </div> <script type="module" src="app.js"></script>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
-

@@ -60,15 +60,37 @@ const backBtn = document.getElementById('backBtn');
 // --- Authentication Logic (Largely the same) ---
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
 let confirmationResult;
+// In app.js
+
 sendOtpBtn.onclick = () => {
-  const phoneNumber = phoneBox.value;
-  signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
-    .then(result => {
+  let phoneNumber = phoneBox.value.trim();
+
+  // --- NEW LOGIC STARTS HERE ---
+  // If the number is 10 digits and doesn't start with +, assume it's an Indian number
+  if (phoneNumber.length === 10 && /^\d{10}$/.test(phoneNumber)) {
+    phoneNumber = "+91" + phoneNumber;
+    console.log("Formatted number:", phoneNumber); // For testing
+  }
+  // --- NEW LOGIC ENDS HERE ---
+
+  // Standard validation check
+  if (!phoneNumber || !/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
+    alert("Please enter a valid 10-digit or international phone number (e.g., +919876543210).");
+    return;
+  }
+  
+  const appVerifier = window.recaptchaVerifier;
+  signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    .then((result) => {
       confirmationResult = result;
       otpGroup.style.display = 'block';
-      alert("OTP sent!");
-    }).catch(error => console.error("OTP Error", error));
+      alert("OTP sent successfully!");
+    }).catch((error) => {
+      console.error("Error sending OTP:", error);
+      alert("Error sending OTP. Check the console for details.");
+    });
 };
+
 verifyOtpBtn.onclick = () => {
   confirmationResult.confirm(otpBox.value).catch(error => alert("Invalid OTP"));
 };
@@ -160,6 +182,7 @@ function initializeChat(user, chatId) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
+
 
 
 

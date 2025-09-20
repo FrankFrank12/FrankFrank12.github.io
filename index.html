@@ -4,25 +4,26 @@
   <meta charset="UTF-8">
   <title>My Chat App</title>
   <style>
-    body { font-family: Arial; max-width: 600px; margin: auto; }
-    #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; }
-    .msg { margin: 5px 0; }
-    #msgBox { width: 80%; }
-    #sendBtn { width: 18%; }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f4f4f9; }
+    h2 { text-align: center; color: #333; }
+    #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; background-color: #fff; margin-bottom: 10px; border-radius: 5px; }
+    .msg { margin: 8px 0; padding: 5px 10px; border-radius: 15px; max-width: 70%; word-wrap: break-word; }
+    .msg-out { background-color: #0084ff; color: white; margin-left: auto; } /* Just an example for later */
+    .msg-in { background-color: #e4e6eb; color: black; } /* Just an example for later */
+    #input-area { display: flex; }
+    #msgBox { flex-grow: 1; border: 1px solid #ccc; padding: 10px; border-radius: 20px; }
+    #sendBtn { border: none; background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 20px; margin-left: 10px; cursor: pointer; }
+    #sendBtn:hover { background-color: #006bcf; }
   </style>
 </head>
 <body>
   <h2>💬 Simple Chat</h2>
   <div id="messages"></div>
-  <input id="msgBox" placeholder="Type a message..." />
-  <button id="sendBtn">Send</button>
+  <div id="input-area">
+    <input id="msgBox" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
+  </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js"></script>
-
-  <!-- Your custom script -->
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

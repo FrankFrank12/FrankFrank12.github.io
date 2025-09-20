@@ -1,7 +1,7 @@
 // --- SITE-WIDE PASSWORD PROTECTION ---
 
 // 1. Set your secret password here
-const SITE_PASSWORD = "your_secret_password"; // Change this to your desired password
+const SITE_PASSWORD = "1980"; // Change this to your desired password
 
 // 2. Prompt the user when they visit the site
 const enteredPassword = prompt("Please enter the password to access this site:");
@@ -160,5 +160,6 @@ function initializeChat(user, chatId) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   });
 }
+
 
 

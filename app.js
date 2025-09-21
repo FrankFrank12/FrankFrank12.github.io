@@ -95,8 +95,13 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// --- CHAT LIST LOGIC ---
+// --- CHAT LIST LOGIC (UPDATED) ---
 function initializeChatList(user) {
+    // ** FIX 1: Clean up any old listener before starting a new one to prevent bugs **
+    if (unsubscribeFromContacts) {
+        unsubscribeFromContacts();
+    }
+
     const contactsRef = collection(db, "users", user.phoneNumber, "contacts");
     const q = query(contactsRef, orderBy("name"));
 
@@ -120,11 +125,19 @@ function initializeChatList(user) {
     });
 }
 
-// --- NAVIGATION EVENT LISTENERS ---
+// --- NAVIGATION EVENT LISTENERS (UPDATED) ---
 addChatFab.onclick = () => showScreen('add-contact-container');
-backToListBtn.onclick = () => showScreen('chat-list-container');
+
+backToListBtn.onclick = () => {
+    // When coming back from 'Add Contact', re-initialize the list
+    initializeChatList(auth.currentUser);
+    showScreen('chat-list-container');
+};
+
 backToChatListBtn.onclick = () => {
+    // ** FIX 2: Re-initialize the chat list when coming back from a conversation **
     if (unsubscribeFromChat) unsubscribeFromChat();
+    initializeChatList(auth.currentUser); // This ensures the list is fresh
     showScreen('chat-list-container');
 };
 
@@ -139,7 +152,7 @@ startChatBtn.onclick = async () => {
     if (!recipientPhone || !/^\+[1-9]\d{1,14}$/.test(recipientPhone)) return alert("Please enter a valid phone number.");
     if (recipientPhone === currentUser.phoneNumber) return alert("You cannot chat with yourself.");
     
-    // Save contact to Firestore. The onSnapshot listener in initializeChatList will automatically update the list.
+    // Save contact to Firestore. The onSnapshot listener will automatically update the list.
     const contactRef = doc(db, "users", currentUser.phoneNumber, "contacts", recipientPhone);
     await setDoc(contactRef, { name: recipientName }, { merge: true });
 
@@ -157,7 +170,6 @@ function openChat(user, recipientPhone, recipientName) {
     const phoneNumbers = [user.phoneNumber, recipientPhone].sort();
     const chatId = phoneNumbers.join('_');
     const messagesRef = collection(db, "chats", chatId, "messages");
-    // --- FIX WAS HERE ---
     const q = query(messagesRef, orderBy("timestamp"));
 
     unsubscribeFromChat = onSnapshot(q, (snapshot) => {

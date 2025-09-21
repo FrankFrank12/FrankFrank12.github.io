@@ -157,7 +157,8 @@ function openChat(user, recipientPhone, recipientName) {
     const phoneNumbers = [user.phoneNumber, recipientPhone].sort();
     const chatId = phoneNumbers.join('_');
     const messagesRef = collection(db, "chats", chatId, "messages");
-    const q = query(messages_ref, orderBy("timestamp"));
+    // --- FIX WAS HERE ---
+    const q = query(messagesRef, orderBy("timestamp"));
 
     unsubscribeFromChat = onSnapshot(q, (snapshot) => {
         messagesDiv.innerHTML = "";

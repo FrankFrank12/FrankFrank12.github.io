@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* --- THEME DEFINITIONS --- */
     :root {
       --primary-color: #0084ff; --secondary-color: #f0f2f5; --bg-light: #ffffff; --bg-dark: #18191a;
       --text-light: #ffffff; --text-dark: #050505; --text-secondary: #65676b; --border-light: #ced0d4; --border-dark: #3a3b3c;
@@ -23,36 +22,27 @@
       --border-light: var(--border-dark); --text-secondary: #b0b3b8;
     }
     .grecaptcha-badge { visibility: hidden; }
-
-    /* --- UI COMPONENTS --- */
     button { border: none; background-color: var(--primary-color); color: white; padding: 12px 15px; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500; transition: background-color 0.2s; }
     button:hover { background-color: #006bcf; }
     input { border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; background-color: var(--secondary-color); color: var(--text-dark); font-family: 'Poppins', sans-serif; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
     input:focus { outline: none; border-color: var(--primary-color); }
     h2 { text-align: center; }
-
-    /* --- LAYOUT CONTAINERS --- */
     #app-wrapper { display: none; flex-direction: column; height: 100%; width: 100%; box-sizing: border-box; padding-bottom: env(safe-area-inset-bottom); }
     .screen { display: none; flex-direction: column; height: 100%; width: 100%; }
     .screen.active { display: flex; }
     .centered-container { justify-content: center; align-items: center; padding: 20px; }
     .centered-container > div { width: 100%; max-width: 350px; }
-
-    /* --- HEADER STYLING --- */
     .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--border-light); flex-shrink: 0; }
     .header-title { font-weight: 600; font-size: 1.2em; }
     .header-button { background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; color: var(--text-dark); }
     .back-button { color: var(--primary-color); font-weight: 600; font-size: 1em; }
-
-    /* --- CHAT LIST SCREEN --- */
     #chat-list-container { position: relative; }
     #chat-list { flex-grow: 1; overflow-y: auto; }
-    .chat-list-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+    .chat-list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid var(--border-light); cursor: pointer; }
     .chat-list-item:hover { background-color: var(--secondary-color); }
     .chat-list-item-name { font-weight: 500; }
+    .unread-badge { background-color: var(--primary-color); color: white; font-size: 0.8em; font-weight: 600; min-width: 20px; height: 20px; border-radius: 10px; display: flex; justify-content: center; align-items: center; padding: 0 6px; }
     #add-chat-fab { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); right: 20px; width: 56px; height: 56px; border-radius: 50%; font-size: 2em; line-height: 56px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-
-    /* --- CHAT SCREEN STYLING --- */
     #messages { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; }
     .msg { max-width: 75%; padding: 8px 12px; border-radius: 18px; margin-bottom: 8px; word-wrap: break-word; line-height: 1.4; }
     .msg-sent { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
@@ -80,15 +70,13 @@
   </div>
   <div id="recaptcha-container"></div>
 
-  <!-- Screen 2: Chat List (The new main screen) -->
+  <!-- Screen 2: Chat List -->
   <div id="chat-list-container" class="screen">
     <div class="header">
         <span class="header-title">BakaZiki</span>
         <button id="theme-toggle-list" class="header-button">🌙</button>
     </div>
-    <div id="chat-list">
-        <!-- Chat items will be dynamically inserted here -->
-    </div>
+    <div id="chat-list"></div>
     <button id="add-chat-fab">+</button>
   </div>
   
@@ -126,3 +114,4 @@
 <script type="module" src="app.js"></script>
 </body>
 </html>
+

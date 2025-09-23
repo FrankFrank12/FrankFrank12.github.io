@@ -17,13 +17,13 @@
     import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyB7H_GFklwLJnqUPZGXWH9AKkJWG3Mc9fU",
-      authDomain: "chat-app-2bad9.firebaseapp.com",
-      projectId: "chat-app-2bad9",
-      storageBucket: "chat-app-2bad9.firebasestorage.app",
-      messagingSenderId: "900500112369",
-      appId: "1:900500112369:web:506dc9d4bd56ab27c7ba50",
-      measurementId: "G-V80NC8TQGJ"
+        apiKey: "AIzaSyB7H_GFklwLJnqUPZGXWH9AKkJWG3Mc9fU",
+        authDomain: "chat-app-2bad9.firebaseapp.com",
+        projectId: "chat-app-2bad9",
+        storageBucket: "chat-app-2bad9.firebasestorage.app",
+        messagingSenderId: "900500112369",
+        appId: "1:900500112369:web:506dc9d4bd56ab27c7ba50",
+        measurementId: "G-V80NC8TQGJ"
 };
 
     const app = initializeApp(firebaseConfig);
@@ -205,4 +205,5 @@
         sendBtn.onclick = sendMessage;
         msgBox.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
     }
+
 

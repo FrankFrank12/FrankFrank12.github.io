@@ -27,7 +27,7 @@
     input { border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; background-color: var(--secondary-color); color: var(--text-dark); font-family: 'Poppins', sans-serif; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
     input:focus { outline: none; border-color: var(--primary-color); }
     h2 { text-align: center; }
-    #app-wrapper { display: none; flex-direction: column; height: 100%; width: 100%; box-sizing: border-box; padding-bottom: env(safe-area-inset-bottom); }
+    #app-wrapper { display: none; flex-direction: column; height: 100%; width: 100%; box-sizing: border-box; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
     .screen { display: none; flex-direction: column; height: 100%; width: 100%; }
     .screen.active { display: flex; }
     .centered-container { justify-content: center; align-items: center; padding: 20px; }
@@ -114,4 +114,5 @@
 <script type="module" src="app.js"></script>
 </body>
 </html>
+
 

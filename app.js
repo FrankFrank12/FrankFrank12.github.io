@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-const functions = getFunctions(app, "asia-south1"); // Initialize Functions, specifying the region
+const functions = getFunctions(app, "asia-south1"); // Initialize Functions, specifying the region.
 
 // --- UI ELEMENT REFERENCES (Added password elements) ---
 const passwordContainer = document.getElementById('password-container');
@@ -39,7 +39,6 @@ const backToChatListBtn = document.getElementById('back-to-chat-list-btn');
 const chatTitle = document.getElementById('chat-title'), messagesDiv = document.getElementById('messages'), msgBox = document.getElementById('msgBox'), sendBtn = document.getElementById('sendBtn');
 const themeToggleList = document.getElementById('theme-toggle-list'), themeToggleChat = document.getElementById('theme-toggle-chat');
 
-
 // --- NEW: SECURE PASSWORD CHECK ---
 // This function calls your backend to verify the password securely.
 const checkSitePassword = httpsCallable(functions, 'checkSitePassword');
@@ -55,11 +54,11 @@ async function handlePasswordSubmit() {
     try {
         const result = await checkSitePassword({ password: enteredPassword });
         if (result.data.success) {
-            // Password is correct, hide the password screen and show the main app
+            // Password is correct, hide the password screen and show the main app.
             passwordContainer.style.display = 'none';
             appWrapper.style.display = 'flex';
         } else {
-            // Password is incorrect, show an error message
+            // Password is incorrect, show an error message.
             passwordError.style.display = 'block';
         }
     } catch (error) {
@@ -198,6 +197,21 @@ startChatBtn.onclick = async () => {
         unreadCount: 0,
         lastMessageText: ""
     }, { merge: true });
+    
+    const recipientContactRef = doc(db, "users", recipientPhone, "contacts", currentUser.phoneNumber);
+    const currentUserContactDoc = await getDoc(doc(db, "users", recipientPhone, "contacts", currentUser.phoneNumber));
+    if (!currentUserContactDoc.exists()) {
+        const currentUserName = prompt(`Enter a name for yourself that ${recipientName} will see:`);
+        if (currentUserName) {
+             await setDoc(recipientContactRef, {
+                name: currentUserName,
+                lastMessageTimestamp: serverTimestamp(),
+                unreadCount: 0,
+                lastMessageText: ""
+            }, { merge: true });
+        }
+    }
+
     recipientPhoneBox.value = "";
     recipientNameBox.value = "";
     openChat(currentUser, recipientPhone, recipientName);

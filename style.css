@@ -1,0 +1,187 @@
+/* Basic Reset and Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+  background-color: #f4f7f9;
+  color: #333;
+}
+
+/* Header and Navigation */
+header {
+  background: #004c99; /* Deep Blue - Trustworthy */
+  color: white;
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: 700;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 25px;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff9900; /* Orange Accent */
+}
+
+/* Hero Section (The main focus area) */
+.hero-section {
+  background: url("https://via.placeholder.com/1200x500/003366/FFFFFF?text=Modern+Logistics+Background")
+    no-repeat center center/cover;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 5%;
+  position: relative;
+  /* Dark overlay for better text readability */
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+  color: white;
+  max-width: 450px;
+  z-index: 10;
+}
+
+.hero-content h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 1.2em;
+}
+
+/* Booking Widget Styling */
+.booking-widget {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+}
+
+.booking-widget h2 {
+  color: #004c99;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.booking-widget input[type="text"],
+.booking-widget select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.quote-button {
+  width: 100%;
+  background-color: #ff9900; /* Vibrant Orange for Action */
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quote-button:hover {
+  background-color: #e68a00;
+}
+
+/* Features Section */
+.features-section {
+  padding: 50px 5%;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  text-align: center;
+}
+
+.feature-card {
+  flex: 1;
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card h3 {
+  color: #004c99;
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9em;
+}
+
+/* Responsiveness (Mobile Adaptation) */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    height: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .hero-content {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5em;
+  }
+
+  .booking-widget {
+    max-width: 90%;
+  }
+
+  .features-section {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  nav {
+    display: none; /* Simple hiding of navigation for small screens */
+  }
+}

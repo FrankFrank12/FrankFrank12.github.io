@@ -1,121 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BakaZiki Chat</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #0084ff; --secondary-color: #f0f2f5; --bg-light: #ffffff; --bg-dark: #18191a;
-      --text-light: #ffffff; --text-dark: #050505; --text-secondary: #65676b; --border-light: #ced0d4; --border-dark: #3a3b3c;
-    }
-    body {
-      font-family: 'Poppins', sans-serif; margin: 0; display: flex; flex-direction: column;
-      height: 100vh; width: 100vw; overflow: hidden; background-color: var(--bg-light); color: var(--text-dark);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    body.dark {
-      --bg-light: var(--bg-dark); --text-dark: var(--text-light); --secondary-color: #3a3b3c;
-      --border-light: var(--border-dark); --text-secondary: #b0b3b8;
-    }
-    .grecaptcha-badge { visibility: hidden; }
-    button { border: none; background-color: var(--primary-color); color: white; padding: 12px 15px; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500; transition: background-color 0.2s; }
-    button:hover { background-color: #006bcf; }
-    input { border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; background-color: var(--secondary-color); color: var(--text-dark); font-family: 'Poppins', sans-serif; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
-    input:focus { outline: none; border-color: var(--primary-color); }
-    h2 { text-align: center; }
-    
-    /* This rule now includes padding-top */
-    #app-wrapper, #password-container {
-        display: none;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-    
-    .screen { display: none; flex-direction: column; height: 100%; width: 100%; }
-    .screen.active { display: flex; }
-    .centered-container { justify-content: center; align-items: center; padding: 20px; }
-    .centered-container > div { width: 100%; max-width: 350px; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--border-light); flex-shrink: 0; }
-    .header-title { font-weight: 600; font-size: 1.2em; }
-    .header-button { background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; color: var(--text-dark); }
-    .back-button { color: var(--primary-color); font-weight: 600; font-size: 1em; }
-    #chat-list-container { position: relative; }
-    #chat-list { flex-grow: 1; overflow-y: auto; }
-    .chat-list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid var(--border-light); cursor: pointer; }
-    .chat-list-item:hover { background-color: var(--secondary-color); }
-    .chat-list-item-name { font-weight: 500; }
-    .unread-badge { background-color: var(--primary-color); color: white; font-size: 0.8em; font-weight: 600; min-width: 20px; height: 20px; border-radius: 10px; display: flex; justify-content: center; align-items: center; padding: 0 6px; }
-    #add-chat-fab { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); right: 20px; width: 56px; height: 56px; border-radius: 50%; font-size: 2em; line-height: 56px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-    #messages { flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; }
-    .msg { max-width: 75%; padding: 8px 12px; border-radius: 18px; margin-bottom: 8px; word-wrap: break-word; line-height: 1.4; }
-    .msg-sent { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .msg-received { background-color: var(--secondary-color); color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 4px; }
-    #input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-light); flex-shrink: 0; align-items: center; }
-    #msgBox { flex-grow: 1; border: none; margin-right: 10px; border-radius: 20px; }
-    #sendBtn { border-radius: 50%; width: 44px; height: 44px; padding: 0; display: flex; justify-content: center; align-items: center; }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistics & Transport Solutions | Home</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo">J M Roadlines</div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
 
-<!-- NEW: Screen 0: Site Password -->
-<div id="password-container" class="screen active centered-container" style="display: flex;">
-    <div>
-        <h2>Enter Password</h2>
-        <input id="passwordBox" type="password" placeholder="Site Password" />
-        <button id="submitPasswordBtn">Enter</button>
-        <p id="password-error" style="color: red; text-align: center; display: none;">Incorrect Password</p>
-    </div>
-</div>
-
-<!-- The rest of your app is now wrapped and hidden -->
-<div id="app-wrapper">
-    
-  <!-- Screen 1: Login -->
-  <div id="login-container" class="screen centered-container">
-    <div>
-      <h2>Login</h2>
-      <input id="phoneBox" type="tel" placeholder="Phone number (e.g., 9876543210)" />
-      <button id="sendOtpBtn">Send OTP</button>
-      <div id="otp-group" style="display: none; margin-top: 1rem;">
-        <input id="otpBox" type="number" placeholder="Enter 6-digit OTP" />
-        <button id="verifyOtpBtn">Verify OTP & Login</button>
+    <main class="hero-section">
+      <div class="hero-content">
+        <h1>Your Freight, Our Priority.</h1>
+        <p>
+          Reliable and commissioned logistics solutions for FTL shipments across
+          the nation.
+        </p>
       </div>
-    </div>
-  </div>
-  <div id="recaptcha-container"></div>
 
-  <!-- Screen 2: Chat List -->
-  <div id="chat-list-container" class="screen">
-    <div class="header">
-        <span class="header-title">BakaZiki</span>
-        <button id="theme-toggle-list" class="header-button">🌙</button>
-    </div>
-    <div id="chat-list"></div>
-    <button id="add-chat-fab">+</button>
-  </div>
-  
-  <!-- Screen 3: Add New Contact -->
-  <div id="add-contact-container" class="screen">
-    <div class="header"><button id="back-to-list-btn" class="header-button back-button">&lt; Back</button><span class="header-title">New Chat</span></div><div style="padding:20px"><input id="recipientPhoneBox" type="tel" placeholder="Recipient's phone number"><input id="recipientNameBox" type="text" placeholder="Recipient's Name"><button id="startChatBtn">Chat</button></div>
-  </div>
-  
-  <!-- Screen 4: One-on-one Chat -->
-  <div id="chat-container" class="screen">
-    <div class="header"><button id="back-to-chat-list-btn" class="header-button back-button">&lt; Back</button><span id="chat-title" class="header-title">Chat</span><button id="theme-toggle-chat" class="header-button">🌙</button></div><div id="messages"></div><div id="input-area"><input id="msgBox" placeholder="Type a message..."><button id="sendBtn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div>
-  </div>
+      <div class="booking-widget">
+        <h2>Get an Instant Quote</h2>
+        <form>
+          <div class="input-group">
+            <label for="from-location">From Location</label>
+            <input
+              type="text"
+              id="from-location"
+              placeholder="City, State or Zip Code"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="to-location">To Location</label>
+            <input
+              type="text"
+              id="to-location"
+              placeholder="City, State or Zip Code"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="truck-type">Select Truck Type</label>
+            <select id="truck-type" required>
+              <option value="">-- Choose Truck Type --</option>
+              <option value="box">Box Truck (26ft)</option>
+              <option value="flatbed">Flatbed Trailer</option>
+              <option value="refrigerated">Refrigerated Van</option>
+            </select>
+          </div>
+          <button type="submit" class="quote-button">Book Now</button>
+        </form>
+      </div>
+    </main>
 
-</div>
+    <section class="features-section">
+      <div class="feature-card">
+        <h3>Fast & Reliable</h3>
+        <p>On-time delivery with real-time tracking.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Commissioned Work</h3>
+        <p>Transparent bidding and commission structure for every job.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Nationwide Network</h3>
+        <p>A vast network of vetted carriers ready to move your cargo.</p>
+      </div>
+    </section>
 
-<script type="module" src="app.js?v=1.1"></script>
-</body>
+    <footer>
+      <p>&copy; 2025 J M Roadlines. All rights reserved.</p>
+    </footer>
+  </body>
 </html>
-

@@ -6,7 +6,7 @@
     <title>Logistics & Transport Solutions | Home</title>
     <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -14,10 +14,9 @@
     <header>
       <div class="logo">J M Roadlines</div>
       <nav>
-        <a href="#">Home</a>
-        <a href="#">Services</a>
-        <a href="#">About Us</a>
+        <a href="#">Login</a>
         <a href="#">Contact</a>
+        <a href="#">About Us</a>
       </nav>
     </header>
 
@@ -31,37 +30,95 @@
       </div>
 
       <div class="booking-widget">
-        <h2>Get an Instant Quote</h2>
-        <form>
-          <div class="input-group">
-            <label for="from-location">From Location</label>
-            <input
-              type="text"
-              id="from-location"
-              placeholder="City, State or Zip Code"
-              required
-            />
-          </div>
-          <div class="input-group">
-            <label for="to-location">To Location</label>
-            <input
-              type="text"
-              id="to-location"
-              placeholder="City, State or Zip Code"
-              required
-            />
-          </div>
-          <div class="input-group">
-            <label for="truck-type">Select Truck Type</label>
-            <select id="truck-type" required>
-              <option value="">-- Choose Truck Type --</option>
-              <option value="box">Box Truck (26ft)</option>
-              <option value="flatbed">Flatbed Trailer</option>
-              <option value="refrigerated">Refrigerated Van</option>
-            </select>
-          </div>
-          <button type="submit" class="quote-button">Book Now</button>
-        </form>
+        <div class="widget-tabs">
+          <button class="tab-btn active" onclick="openTab('book', this)">
+            Book Now
+          </button>
+          <button class="tab-btn" onclick="openTab('track', this)">
+            Track Shipment
+          </button>
+        </div>
+
+        <div id="book" class="tab-content">
+          <h2>Get a Quote</h2>
+
+          <form id="booking-form" onsubmit="handleFinalSubmit(event)">
+            <div id="step-1">
+              <div class="input-group">
+                <label for="from-location">From Location</label>
+                <input
+                  type="text"
+                  id="from-location"
+                  placeholder="City or State"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="to-location">To Location</label>
+                <input
+                  type="text"
+                  id="to-location"
+                  placeholder="City or State"
+                  required
+                />
+              </div>
+              <button type="button" class="quote-button" onclick="goToStep2()">
+                Next Details &rarr;
+              </button>
+            </div>
+
+            <div id="step-2" style="display: none">
+              <p style="margin-bottom: 10px; font-size: 0.9rem; color: #666">
+                Great! Where should we send the rates?
+              </p>
+
+              <div class="input-group">
+                <label for="contact-number">Mobile Number</label>
+                <input
+                  type="tel"
+                  id="contact-number"
+                  placeholder="Ex: 98765 43210"
+                />
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-top: 10px">
+                <button
+                  type="button"
+                  class="quote-button"
+                  style="background-color: #ccc; flex: 1"
+                  onclick="goBackToStep1()"
+                >
+                  Back
+                </button>
+                <button type="submit" class="quote-button" style="flex: 2">
+                  Request Quote
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div id="track" class="tab-content" style="display: none">
+          <h2>Track Your Trip</h2>
+          <form>
+            <div class="input-group">
+              <label for="truck-id">Truck Number or ID</label>
+              <input
+                type="text"
+                id="truck-id"
+                placeholder="Ex: MH-12-AB-1234"
+                required
+              />
+            </div>
+            <button
+              type="button"
+              class="quote-button"
+              onclick="alert('Tracking feature coming soon!')"
+            >
+              Track
+            </button>
+          </form>
+        </div>
       </div>
     </main>
 
@@ -83,5 +140,69 @@
     <footer>
       <p>&copy; 2025 J M Roadlines. All rights reserved.</p>
     </footer>
+
+    <script>
+      // --- TAB LOGIC ---
+      function openTab(tabName, btnElement) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+          contents[i].style.display = "none";
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        if (btnElement) {
+          btnElement.classList.add("active");
+        }
+      }
+
+      // --- MULTI-STEP FORM LOGIC ---
+      function goToStep2() {
+        const from = document.getElementById("from-location").value;
+        const to = document.getElementById("to-location").value;
+
+        // Validation: Ensure fields are not empty
+        if (from.trim() === "" || to.trim() === "") {
+          alert("Please enter both Pickup and Drop locations first.");
+          return;
+        }
+
+        // Switch Views
+        document.getElementById("step-1").style.display = "none";
+        document.getElementById("step-2").style.display = "block";
+      }
+
+      function goBackToStep1() {
+        document.getElementById("step-2").style.display = "none";
+        document.getElementById("step-1").style.display = "block";
+      }
+
+      // --- WHATSAPP LOGIC ---
+      function handleFinalSubmit(event) {
+        event.preventDefault(); // Stops page from reloading
+
+        // 1. Get User Data
+        const from = document.getElementById("from-location").value;
+        const to = document.getElementById("to-location").value;
+        const userPhone = document.getElementById("contact-number").value;
+
+        // 2. YOUR Phone Number (Format: CountryCode + Number, no spaces)
+        // TODO: Change this number to your real WhatsApp number!
+        const companyPhoneNumber = "917283891870";
+
+        // 3. Create Message
+        const text =
+          `Hello J M Roadlines, I would like a quote.%0A%0A` +
+          `📍 *From:* ${from}%0A` +
+          `📍 *To:* ${to}%0A` +
+          `📞 *My Contact:* ${userPhone}`;
+
+        // 4. Open WhatsApp
+        const whatsappUrl = `https://wa.me/${companyPhoneNumber}?text=${text}`;
+        window.open(whatsappUrl, "_blank");
+      }
+    </script>
   </body>
 </html>

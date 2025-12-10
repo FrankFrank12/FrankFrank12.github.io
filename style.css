@@ -1,4 +1,4 @@
-/* Basic Reset and Global Styles */
+/* Global Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -8,180 +8,304 @@
 body {
   font-family: "Poppins", sans-serif;
   line-height: 1.6;
-  background-color: #f4f7f9;
   color: #333;
+  background-color: #f9f9f9;
 }
 
-/* Header and Navigation */
+/* Header & Navigation */
 header {
-  background: #004c99; /* Deep Blue - Trustworthy */
-  color: white;
-  padding: 15px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Slimmer padding as requested */
+  padding: 0.8rem 5%;
+  background-color: #027afa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
+/* Logo - Stamp Style */
 .logo {
-  font-size: 1.8em;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f6c232;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  /* Stamp Border Effect */
+  border: 3px solid #f6c232;
+  padding: 5px 15px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.logo:hover {
+  background-color: #f6c232;
+  color: #027afa;
+  box-shadow: 0 0 15px rgba(246, 194, 50, 0.5);
+  transform: scale(1.05);
+}
+
+/* Navigation Buttons */
 nav a {
-  color: white;
   text-decoration: none;
-  margin-left: 25px;
+  color: #feffb4;
+  margin-left: 1rem;
   font-weight: 600;
-  transition: color 0.3s;
+
+  /* Button Shape */
+  border: 2px solid #feffb4;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
 }
 
 nav a:hover {
-  color: #ff9900; /* Orange Accent */
+  background-color: #feffb4;
+  color: #027afa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Hero Section (The main focus area) */
+/* Hero Section */
 .hero-section {
-  background: url("https://via.placeholder.com/1200x500/003366/FFFFFF?text=Modern+Logistics+Background")
-    no-repeat center center/cover;
-  height: 500px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  padding: 0 5%;
-  position: relative;
-  /* Dark overlay for better text readability */
-  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.7)),
+    url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+
+  /* Compact Height */
+  padding: 3rem 5%;
+  min-height: 60vh;
+  color: #fff;
 }
 
 .hero-content {
-  color: white;
-  max-width: 450px;
-  z-index: 10;
+  max-width: 800px;
+  margin-bottom: 2rem;
 }
 
 .hero-content h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
 }
 
 .hero-content p {
-  font-size: 1.2em;
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
-/* Booking Widget Styling */
+/* Booking Widget Container */
 .booking-widget {
-  background: white;
-  padding: 30px;
+  background-color: #fff;
+  padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  z-index: 10;
+  max-width: 800px; /* Compact width */
+}
+
+/* Tabs Styling */
+.widget-tabs {
+  display: flex;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 15px 10px;
+  background: #f4f7f9;
+  border: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+  background: #eef2f5;
+  color: #027afa;
+}
+
+.tab-btn.active {
+  background: #fff;
+  color: #027afa;
+  border-bottom: 3px solid #f6c232;
 }
 
 .booking-widget h2 {
-  color: #004c99;
-  margin-bottom: 20px;
-  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* Form Styles */
+.booking-widget form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Multi-Step Form Fix - Keeps inputs and button in one row */
+#step-1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end; /* Aligns button to bottom */
+  width: 100%;
 }
 
 .input-group {
-  margin-bottom: 15px;
+  flex: 1; /* Inputs grow to fill space */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  min-width: 200px;
 }
 
 .input-group label {
-  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.3rem;
   font-weight: 600;
-  margin-bottom: 5px;
-  color: #555;
 }
 
-.booking-widget input[type="text"],
-.booking-widget select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
+.input-group input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1em;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  width: 100%;
 }
 
+.input-group input:focus {
+  outline: none;
+  border-color: #e67e22;
+}
+
+/* Button Styles */
 .quote-button {
-  width: 100%;
-  background-color: #ff9900; /* Vibrant Orange for Action */
-  color: white;
-  padding: 15px;
+  background-color: #e67e22;
+  color: #fff;
   border: none;
+  padding: 0 2rem; /* Horizontal padding only, height set below */
+  font-size: 1rem;
+  font-weight: 600;
   border-radius: 4px;
-  font-size: 1.1em;
-  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
+  height: 48px; /* Matches input height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .quote-button:hover {
-  background-color: #e68a00;
+  background-color: #d35400;
+  transform: translateY(-2px);
 }
 
 /* Features Section */
 .features-section {
-  padding: 50px 5%;
   display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 4rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feature-card {
-  flex: 1;
-  background: white;
-  padding: 25px;
+  background: #fff;
+  padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  flex: 1 1 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border-top: 4px solid #2c3e50;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card h3 {
-  color: #004c99;
-  margin-bottom: 10px;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.feature-card p {
+  color: #666;
+  font-size: 0.95rem;
 }
 
 /* Footer */
 footer {
-  background: #333;
-  color: white;
+  background-color: #2c3e50;
+  color: #ecf0f1;
   text-align: center;
-  padding: 20px 0;
-  font-size: 0.9em;
+  padding: 2rem;
+  margin-top: auto;
 }
 
-/* Responsiveness (Mobile Adaptation) */
+footer p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .hero-section {
+  header {
     flex-direction: column;
-    height: auto;
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-
-  .hero-content {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .hero-content h1 {
-    font-size: 2.5em;
-  }
-
-  .booking-widget {
-    max-width: 90%;
-  }
-
-  .features-section {
-    flex-direction: column;
-    gap: 20px;
+    padding: 1rem;
   }
 
   nav {
-    display: none; /* Simple hiding of navigation for small screens */
+    margin-top: 1rem;
+  }
+
+  nav a {
+    margin: 0 5px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .booking-widget {
+    padding: 1rem;
+  }
+
+  /* Stack inputs on mobile */
+  #step-1 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quote-button {
+    width: 100%;
   }
 }
